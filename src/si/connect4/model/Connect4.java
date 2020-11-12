@@ -15,7 +15,7 @@ public class Connect4 extends GameStateImpl {
 
     }
 
-    static public final int x = 7,y = 6;
+    static public final int x = 8,y = 8;
     Token[][] board = new Token[x][y];
     {
         for (int i = 0; i < x; i++) {
@@ -62,7 +62,7 @@ public class Connect4 extends GameStateImpl {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (int i = y-1; i >= 0; i--) {
-            result.append(i+1);
+            result.append(i);
             result.append(" |");
             for (int j = 0; j < x; j++) {
                 result.append(this.board[j][i] == Token.EMPTY ? " " : this.board[j][i].name());
@@ -73,7 +73,7 @@ public class Connect4 extends GameStateImpl {
         result.append("  ");
         for (int i = 0; i < x; i++) {
             result.append(" ");
-            result.append(i+1);
+            result.append(i);
         }
 
         result.append('\n');

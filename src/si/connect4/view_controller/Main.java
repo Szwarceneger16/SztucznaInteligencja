@@ -3,6 +3,7 @@ package si.connect4.view_controller;
 import org.eclipse.swt.internal.C;
 import sac.game.AlphaBetaPruning;
 import sac.game.GameSearchAlgorithm;
+import sac.game.MinMax;
 import si.connect4.model.Connect4;
 import si.connect4.model.SimpleHeuristics;
 
@@ -13,7 +14,8 @@ public class Main {
     public static void main(String args[]) {
         Scanner scanner = new Scanner(System.in);
 
-        Connect4.setHFunction(new SimpleHeuristics());
+        SimpleHeuristics smp = new SimpleHeuristics();
+        Connect4.setHFunction(smp);
         Connect4 conn = new Connect4();
 
         System.out.println(conn);
@@ -37,17 +39,19 @@ public class Main {
                 System.out.println("Podaj PRAWIDLOWA kolumne: ");
             }
             System.out.println(conn);
+            System.out.println("Moje H" + conn.getH());
+            System.out.println("moja heurystyka" + smp.calculate(conn));
         }
 
         GameSearchAlgorithm algo = new AlphaBetaPruning();
-        algo.setInitial(conn);
-        algo.execute();
         Map<String,Double> score;
 
 
         double SI_result = 0;
         while (true) {
             //tura komputera
+            algo.setInitial(conn);
+            algo.execute();
             conn.makeMove(Integer.valueOf(algo.getFirstBestMove()));
             score = algo.getMovesScores();
             score.forEach( (arg1,arg2) -> {
@@ -55,15 +59,19 @@ public class Main {
             });
             System.out.println("KOMPUTER");
             System.out.println(conn);
+            System.out.println("Moje H" + conn.getH());
+            System.out.println("moja heurystyka" + smp.calculate(conn));
 
             //tura czlowieka
             System.out.println("Podaj kolumne: ");
-            while (!conn.makeMove(scanner.nextInt()-1)) {
+            while (!conn.makeMove(scanner.nextInt())) {
                 System.out.println("Podaj PRAWIDLOWA kolumne: ");
             }
             System.out.println("CZLOWIEK");
             System.out.println(conn);
-            algo.setInitial(conn);
+            System.out.println("Moje H" + conn.getH());
+            System.out.println("moja heurystyka" + smp.calculate(conn));
+
         }
     }
 }

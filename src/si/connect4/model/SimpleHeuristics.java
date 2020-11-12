@@ -19,6 +19,11 @@ public class SimpleHeuristics extends StateFunction {
 //        System.out.println("Jestem tutaj");
 
         int k =0;
+        for (int i = 0; i < conn.x; i++) {
+            if (conn.board[i][conn.y-1] == Connect4.Token.O) return Double.NEGATIVE_INFINITY;
+            else if (conn.board[i][conn.y-1] == Connect4.Token.X) return Double.POSITIVE_INFINITY;
+        }
+
         for (int i = 0; i < conn.x; i++) { //poziom
             for (int j = 0; j < conn.y; j++) { //pion
                 if (conn.board[i][j] == Connect4.Token.EMPTY) continue;
