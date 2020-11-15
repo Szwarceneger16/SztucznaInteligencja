@@ -25,7 +25,7 @@ public class Main {
         return false;
     }
 
-    static final boolean _DEBUG_ = true;
+    static final boolean _DEBUG_ = false;
     public static void main(String args[]) {
         Scanner scanner = new Scanner(System.in);
 
@@ -50,7 +50,7 @@ public class Main {
 
         if (startujeCzlowiek) {
             System.out.println("Podaj kolumne: ");
-            while (!conn.makeMove(scanner.nextInt()-1)) {
+            while (!conn.makeMove(scanner.nextInt())) {
                 System.out.println("Podaj PRAWIDLOWA kolumne: ");
             }
             System.out.println(conn);

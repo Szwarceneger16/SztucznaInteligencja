@@ -35,7 +35,15 @@ public class AdvanceHeuristics extends StateFunction {
                 if (i < conn.x-3) {
 
                     for (int k = 0; k < 4; k++) {
-                        if (conn.board[i+k][j] == Connect4.Token.O) tempValue--;
+                        if (conn.board[i+k][j] == Connect4.Token.O && tempValue > 0) {
+                            tempValue = 0;
+                            break;
+                        }
+                        else if (conn.board[i+k][j] == Connect4.Token.O) tempValue--;
+                        else if (conn.board[i+k][j] == Connect4.Token.X && tempValue < 0) {
+                            tempValue = 0;
+                            break;
+                        }
                         else if (conn.board[i+k][j] == Connect4.Token.X) tempValue++;
                     }
                     if (tempValue == 4) return Double.POSITIVE_INFINITY;
@@ -54,7 +62,15 @@ public class AdvanceHeuristics extends StateFunction {
                 if (i < conn.x-3 && j < conn.y-3) {
 
                     for (int k = 0; k < 4; k++) {
-                        if (conn.board[i+k][j+k] == Connect4.Token.O) tempValue--;
+                        if (conn.board[i+k][j+k] == Connect4.Token.O && tempValue > 0) {
+                            tempValue = 0;
+                            break;
+                        }
+                        else if (conn.board[i+k][j+k] == Connect4.Token.O) tempValue--;
+                        else if (conn.board[i+k][j+k] == Connect4.Token.X && tempValue < 0) {
+                            tempValue=0;
+                            break;
+                        }
                         else if (conn.board[i+k][j+k] == Connect4.Token.X) tempValue++;
                     }
                     if (tempValue == 4) return Double.POSITIVE_INFINITY;
@@ -77,7 +93,15 @@ public class AdvanceHeuristics extends StateFunction {
                 if (j < conn.y-3) {
 
                     for (int k = 0; k < 4; k++) {
-                        if (conn.board[i][j+k] == Connect4.Token.O) tempValue--;
+                        if (conn.board[i][j+k] == Connect4.Token.O && tempValue > 0) {
+                            tempValue=0;
+                            break;
+                        }
+                        else if (conn.board[i][j+k] == Connect4.Token.O) tempValue--;
+                        else if (conn.board[i][j+k] == Connect4.Token.X && tempValue < 0) {
+                            tempValue=0;
+                            break;
+                        }
                         else if (conn.board[i][j+k] == Connect4.Token.X) tempValue++;
                     }
                     if (tempValue == 4) return Double.POSITIVE_INFINITY;
@@ -100,7 +124,15 @@ public class AdvanceHeuristics extends StateFunction {
                 if (i > 2 && j < conn.y-3) {
 
                     for (int k = 0; k < 4; k++) {
-                        if (conn.board[i-k][j+k] == Connect4.Token.O) tempValue--;
+                        if (conn.board[i-k][j+k] == Connect4.Token.O && tempValue > 0) {
+                            tempValue = 0;
+                            break;
+                        }
+                        else if (conn.board[i-k][j+k] == Connect4.Token.O && tempValue < 0) tempValue--;
+                        else if (conn.board[i-k][j+k] == Connect4.Token.X) {
+                            tempValue=0;
+                            break;
+                        }
                         else if (conn.board[i-k][j+k] == Connect4.Token.X) tempValue++;
                     }
                     if (tempValue == 4) return Double.POSITIVE_INFINITY;
