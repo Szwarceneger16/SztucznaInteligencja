@@ -13,7 +13,7 @@ import java.util.Random;
 public class Puzzle extends GraphStateImpl {
     private static final boolean DEBUG = false;
 
-    private enum direction {
+    public enum direction {
         LEFT, RIGHT, UP, DOWN;
 
         static private Random gen = new Random(1);

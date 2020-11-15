@@ -26,7 +26,7 @@ public class Connect4 extends GameStateImpl {
     }
 
     public Connect4() {
-//        this.setMaximizingTurnNow(true);
+        this.setMaximizingTurnNow(true);
     }
 
     public Connect4(Connect4 in) {

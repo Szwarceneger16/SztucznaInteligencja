@@ -5,12 +5,6 @@ import sac.State;
 import sac.StateFunction;
 
 public class SimpleHeuristics extends StateFunction {
-    private boolean verdict(Connect4.Token arg1, Connect4.Token arg2) {
-        if (arg1 != Connect4.Token.EMPTY) {
-
-        }
-        return true;
-    }
 
     @Override
     public double calculate(State state) {
