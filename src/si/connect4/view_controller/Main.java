@@ -25,7 +25,7 @@ public class Main {
         return false;
     }
 
-    static final boolean _DEBUG_ = false;
+    static final boolean _DEBUG_ = true;
     public static void main(String args[]) {
         Scanner scanner = new Scanner(System.in);
 

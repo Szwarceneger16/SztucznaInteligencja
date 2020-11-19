@@ -113,7 +113,7 @@ public class Puzzle extends GraphStateImpl {
         byte temp;
         direction way;
         for (int i = 0; i < randomCount; i++) {
-            way = direction.getRandomDirection(posx,posy,this.n);
+            way = direction.getRandomDirection(posx,posy,this.n); // rand.nextInt(Integer.MAX_VALUE)%4
 
             temp = board[posy][posx];
             switch (way) {
@@ -196,7 +196,6 @@ public class Puzzle extends GraphStateImpl {
     @Override
     public List<GraphState> generateChildren() {
         List<GraphState> children = new ArrayList<GraphState>();
-
 
         for (direction dir:
              direction.values()) {

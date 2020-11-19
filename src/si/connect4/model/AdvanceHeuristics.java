@@ -128,8 +128,8 @@ public class AdvanceHeuristics extends StateFunction {
                             tempValue = 0;
                             break;
                         }
-                        else if (conn.board[i-k][j+k] == Connect4.Token.O && tempValue < 0) tempValue--;
-                        else if (conn.board[i-k][j+k] == Connect4.Token.X) {
+                        else if (conn.board[i-k][j+k] == Connect4.Token.O) tempValue--;
+                        else if (conn.board[i-k][j+k] == Connect4.Token.X && tempValue < 0) {
                             tempValue=0;
                             break;
                         }

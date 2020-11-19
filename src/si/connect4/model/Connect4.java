@@ -15,7 +15,7 @@ public class Connect4 extends GameStateImpl {
 
     }
 
-    static public final int x = 8,y = 8;
+    static public final int x = 10,y = 10;
     Token[][] board = new Token[x][y];
     {
         for (int i = 0; i < x; i++) {

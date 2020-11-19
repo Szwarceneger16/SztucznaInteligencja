@@ -12,56 +12,56 @@ import java.util.Scanner;
 public class main {
 
     public static void main(String args[]) {
-        Puzzle puz = new Puzzle();
+/*        Puzzle puz = new Puzzle();
         System.out.println(puz);
         puz.randomizeLayout();
         System.out.println(puz);
-        manhattan man = new manhattan();
-        misplacedTiles mis = new misplacedTiles();
-
-        GraphSearchAlgorithm algo;
-
-        puz.setHFunction( man);
-        algo = new AStar(puz);
-        algo.execute();
-        List<GraphState> sol = algo.getSolutions();
-        System.out.println(puz);
-        System.out.println(sol.get(0).getMovesAlongPath().size());
-        System.out.println(algo.getDurationTime());
-        System.out.println(algo.getOpenSet().size());
-        System.out.println(algo.getClosedStatesCount());
-//        Scanner scanner = new Scanner(System.in);
+//        manhattan man = new manhattan();
+//        misplacedTiles mis = new misplacedTiles();
 //
-//        String dir;
+//        GraphSearchAlgorithm algo;
 //
-//        int count = 0;
-//        while (true) {
-//
-//            do {
-//                System.out.println("Podaj ruch: ");
-//                dir = scanner.nextLine().substring(0,1);
-//            } while (dir == "a" || dir == "d" || dir == "w" || dir == "s");
-//            count++;
-//            System.out.flush();
-//            switch (dir)
-//            {
-//                case "d":
-//                    puz.move(Puzzle.direction.LEFT);
-//                    break;
-//                case "a":
-//                    puz.move(Puzzle.direction.RIGHT);
-//                    break;
-//                case "s":
-//                    puz.move(Puzzle.direction.UP);
-//                    break;
-//                case "w":
-//                    puz.move(Puzzle.direction.DOWN);
-//                    break;
-//            }
-//            System.out.println(puz);
-//        }
+//        puz.setHFunction( man);
+//        algo = new AStar(puz);
+//        algo.execute();
+//        List<GraphState> sol = algo.getSolutions();
+//        System.out.println(puz);
+//        System.out.println(sol.get(0).getMovesAlongPath().size());
+//        System.out.println(algo.getDurationTime());
+//        System.out.println(algo.getOpenSet().size());
+//        System.out.println(algo.getClosedStatesCount());
+        Scanner scanner = new Scanner(System.in);
 
-        /*final int size = 100;
+        String dir;
+
+        int count = 0;
+        while (true) {
+
+            do {
+                System.out.println("Podaj ruch: ");
+                dir = scanner.nextLine().substring(0,1);
+            } while (dir == "a" || dir == "d" || dir == "w" || dir == "s");
+            count++;
+
+            switch (dir)
+            {
+                case "d":
+                    puz.move(Puzzle.direction.LEFT);
+                    break;
+                case "a":
+                    puz.move(Puzzle.direction.RIGHT);
+                    break;
+                case "s":
+                    puz.move(Puzzle.direction.UP);
+                    break;
+                case "w":
+                    puz.move(Puzzle.direction.DOWN);
+                    break;
+            }
+            System.out.println(puz);
+        }*/
+
+        final int size = 100;
         Puzzle[] testPuz = new Puzzle[size];
         Arrays.setAll(testPuz, p -> new Puzzle());
         for (Puzzle puz:
@@ -132,7 +132,7 @@ public class main {
         System.out.println("Mean Misplaced Time [ms]: " + meanDurationTime);
         System.out.println("Mean Misplaced Closed: " + meanClosedStates);
         System.out.println("Mean Misplaced open: " + meanOpenStates);
-        System.out.println("Mean Misplaced PathDepth: " + meanPathDepth);*/
+        System.out.println("Mean Misplaced PathDepth: " + meanPathDepth);
 
 
     }
