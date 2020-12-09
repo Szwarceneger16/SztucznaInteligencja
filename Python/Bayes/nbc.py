@@ -3,7 +3,9 @@ from sklearn.base import  BaseEstimator, ClassifierMixin
 
 class DiscreteNBC (BaseEstimator, ClassifierMixin):
 
-    def __init__(self, domain_sizes = None,laplace=False):
+    def __init__(self, domain_sizes = None,laplace=False,useLogarithm=False):
+        if useLogarithm:
+            laplace=True
         self.class_labels_ = None # etykiety klas, oblcizneia na 1,2,3 a pozniej zmapowac do peirwotnych
         self.PY_ = None # prawdopodbienstwa klas apriori (prawd. wystapienia danej klasy), wektor numpy z prawdopodbienstwami klas, czyli jak czesto jest jedna,druga... klasa
         self.P_ = None # struktura 3-wymairowa z wszystkimi rozkladami warunkowymi =>
@@ -12,6 +14,7 @@ class DiscreteNBC (BaseEstimator, ClassifierMixin):
         #  czyli prawdopodbienstwo ze dla wina klasy 2  smolistosc (zmienna x 7) jest rowna 1 [2,7][1]
         self.domains_sizes_ = domain_sizes #rozmiar dziedziny, przygotowanie na brak wartosic z jakiejs szuflady, wektor z dziediznami danej cechy
         self.laplace_ = laplace #poprawka dla malych danych cuzacych poprawia skutecznosc, bo nie uistawia 0 wiec nie sa pomijane w oblcizeniach
+        self.useLogarithm_ = useLogarithm
 
         pass
 
@@ -39,6 +42,7 @@ class DiscreteNBC (BaseEstimator, ClassifierMixin):
         for i in range(m): #petla po przykladach uczacych
             for j in range(n): #petla po kolumnach
                 v = X[i,j] #zmienna x(n) przyjela wartosc v
+
                 self.P_[y_normalized[i], j][v] += 1  # y_normalized[i] rozpoznaje jakiej klasy jest dana probka, no i dla tej klasy , o zmiennej j zwiekszamy licznik dla wartosci(kubelka) v
 
         #zamaina licznosci w prawdopodbienstwa
@@ -53,6 +57,11 @@ class DiscreteNBC (BaseEstimator, ClassifierMixin):
                 for j in range(n):
                     self.P_[yy,j] = (self.P_[yy,j] + 1) / (y_sum + self.domains_sizes_[j])
         #print(self.P_)
+        if self.useLogarithm_:
+            self.PY_ = np.log2(self.PY_)
+            for i,_ in enumerate(self.P_):
+                for j, _ in enumerate(self.P_[i]):
+                    self.P_[i,j] = np.log2(self.P_[i,j])
 
         pass
 
@@ -65,13 +74,25 @@ class DiscreteNBC (BaseEstimator, ClassifierMixin):
         # wzor ->   y* = arg max_y prod{j = 1}^n P(X_j - x+j | Y = y) P(Y = y)
         m,n = X.shape
         scores = np.ones((m, self.class_labels_.size))  # kolumn tyle co klas
-        for i in range(m):
-            for yy in range( self.class_labels_.size):
-                for j in range(n): # po kolumnach
-                    scores[i,yy] *= self.P_[yy,j][ X[i,j]]
-            s = scores[i].sum()
-            if s > 0.0:
-                scores[i] /= s
+        if self.useLogarithm_:
+            for i in range(m): #dla danego przykaldu
+                for yy in range( self.class_labels_.size): # dla danej klasy ( e albo p)
+                    for j in range(n): # po kolumnach(atrybutach)
+                        scores[i,yy] += self.P_[yy,j][ X[i,j]] #pytamy o rpawdopodbienstwo wystepowania i-tej probki j-tego atrybutu pod warunkiem ze klasa to yy a atrybut to j
+                    scores[i,yy] += self.PY_[yy] # prawdopodbienstwo klasy y (aprriori) - wyrownanie szans jak klasa ma przewage lcizebna w probkach
+                s = np.exp2(scores[i]).sum()
+                if s > 0.0:
+                    scores[i] /= s
+
+        else:
+            for i in range(m): #dla danego przykaldu
+                for yy in range( self.class_labels_.size): # dla danej klasy ( e albo p)
+                    for j in range(n): # po kolumnach(atrybutach)
+                        scores[i,yy] *= self.P_[yy,j][ X[i,j]] #pytamy o rpawdopodbienstwo wystepowania i-tej probki j-tego atrybutu pod warunkiem ze klasa to yy a atrybut to j
+                    scores[i,yy] *= self.PY_[yy] # prawdopodbienstwo klasy y (aprriori) - wyrownanie szans jak klasa ma przewage lcizebna w probkach
+                s = scores[i].sum()
+                if s > 0.0:
+                    scores[i] /= s
 
         #scores = np.divide(scores,np.sum(scores,axis=0),axis=1)
         #print(scores)
