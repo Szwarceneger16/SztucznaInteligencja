@@ -83,7 +83,7 @@ def wineMain():
     # print(X_train_d)
     # print(X_test_d)
     domain_sizes = np.ones(n,dtype="int8")*B #wektor z rozmairami koszykow dla danych cech, akzda dziedzina ma B wartosci
-    dnbc = DiscreteNBC(domain_sizes= domain_sizes, laplace= True,useLogarithm=True)
+    dnbc = DiscreteNBC(domain_sizes= domain_sizes, laplace= False,useLogarithm=False)
     dnbc.fit(X_train_d,y_train) #uczymy
 
     #na rzecz danych uczacych
@@ -102,10 +102,13 @@ def mushroomMain():
     X, y = import_data(main_path + "mushroomSet\\agaricus-lepiota.data")
     X, domains = forDiscretizeiedYet(X)  # zamiana na numerki stringow
 
-    X_train, y_train, X_test, y_test = train_test_split(X,y,train_ratio=0.75,seed=0)
+    X = np.tile(X,(1,100))
+    domains = np.tile(domains, 100)
+
+    X_train, y_train, X_test, y_test = train_test_split(X,y,train_ratio=0.1,seed=0)
     m,n = X_train.shape
 
-    dnbc = DiscreteNBC(domain_sizes=domains, laplace=True,useLogarithm=False)
+    dnbc = DiscreteNBC(domain_sizes=domains, laplace=True,useLogarithm=True)
     dnbc.fit(X_train, y_train)  # uczymy
 
     # na rzecz danych uczacych
