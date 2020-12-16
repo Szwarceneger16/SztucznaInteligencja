@@ -1,8 +1,10 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.colors import ListedColormap
 from Perceptron.SimplePerceptron import SimplePerceptron
 
 np.set_printoptions(suppress=True,precision=9)
+my_colors = ListedColormap(["darkorange", "lightseagreen"])
 main_path = 'C:\\Users\\GSzwa\\IdeaProjects\\Si\\Python\\Perceptron\\'
 
 def myMain():
@@ -22,37 +24,44 @@ def myMain():
     y = []
     for xx in X:
         y.append(-1) if np.abs( np.sin(xx[0])) > np.abs(np.sin(xx[1])) else y.append(1)
-    X = (X - np.min(X, axis=0)) / (np.max(X, axis=0) - np.min(X, axis=0))
+    X = (X - np.min(X, axis=0)) / (np.max(X, axis=0) - np.min(X, axis=0)) *2 -1
 
-    plt.scatter(X[:,0],X[:,1],c=y,s=2)
-    plt.show()
+    # plt.scatter(X[:,0],X[:,1],c=y,s=2)
+    # plt.show()
 
-    clf = SimplePerceptron(eta=1.0,mp=30)
-    w,k = clf.fit(X,y,1000)
-    print(w,k)
+    eta = 0.4
+    mp = 80
+    clf = SimplePerceptron(eta=eta,mp=mp)
+    w,k = clf.fit(X,y,3500)
+    acc = str(clf.score(X, y))
+    print("TRAIN ACC:" + acc)
+
+    #print(w,k)
     # x1 = np.array([0,1])
     # x2 = -(w[0] + w[1] * x1) / w[2]
     # plt.plot(x1,x2)
     # plt.show()
 
-    lin_xx, lin_yy = (np.linspace(np.min(X[:,0]), np.max(X[:,0])), np.linspace(np.min(X[:,1]), np.max(X[:,1])))
+    lin_xx, lin_yy = (np.linspace(np.min(X[:,0])*1.1, np.max(X[:,0])*1.1,num=100), np.linspace(np.min(X[:,1])*1.1, np.max(X[:,1])*1.1,num=100))
     temp = np.zeros((np.shape(lin_xx)[0], np.shape(lin_xx)[0]))
     xs, ys = np.meshgrid(lin_xx, lin_yy)
-    # j = 0
-    # i = 0
-    # for a in xs:
-    #     for b in ys:
-    #         temp[i][j] = clf.predict( np.asarray([[a[j], b[i]]]) )
-    #         i = i + 1
-    #     i = 0
-    #     j = j + 1
-    for ai,a in enumerate(lin_yy):
-        for bi,b in enumerate(lin_xx):
+
+    for ai,a in enumerate(lin_xx):
+        for bi,b in enumerate(lin_yy):
             temp[ai][bi] = clf.predict( np.asarray([[a, b]]) )
-    plt.contour(xs, ys, temp)
+    plt.title("Contour plot ACC, "+ acc + ", k=" + str(k) +", centers=" + str(mp) +", eta= " + str(eta))
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=8,cmap=my_colors)
+    plt.contour(ys, xs, temp)
     plt.show()
 
-    print("TRAIN ACC:" + str(clf.score(X,y)))
+    for ai,a in enumerate(lin_xx):
+        for bi,b in enumerate(lin_yy):
+            temp[ai][bi] = clf.decision_function( np.asarray([[a, b]]) )
+    plt.title("Contour plot ACC, "+ acc + ", k=" + str(k) +", centers=" + str(mp) +", eta= " + str(eta))
+    ax = plt.axes(projection='3d')
+    ax.plot_surface(ys, xs, temp, cmap='viridis', edgecolor='none')
+    plt.show()
+
     pass
 
 

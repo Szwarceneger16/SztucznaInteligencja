@@ -1,6 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.colors import ListedColormap
 from sklearn.base import  BaseEstimator, ClassifierMixin
+
+my_colors = ListedColormap(["darkorange", "lightseagreen"])
 
 class SimplePerceptron(BaseEstimator, ClassifierMixin):
     def __init__(self, eta=1.0,mp=30,sigma=0.5):
@@ -22,12 +25,14 @@ class SimplePerceptron(BaseEstimator, ClassifierMixin):
         y_normalized[ y == self.class_labels_[0]] = -1
 
         # normalziacja wspolrzednych
-        X = (X - np.min(X,axis=0))  / (np.max(X,axis=0) - np.min(X,axis=0))
+        #X = (X - np.min(X,axis=0))  / (np.max(X,axis=0) - np.min(X,axis=0))
+        #X = (X - np.min(X, axis=0)) / (np.max(X, axis=0) - np.min(X, axis=0)) * 2 - 1
 
         # podniesienie wymiarowosci
-        self.centers_ = np.random.rand(self.mp_,n)
-        # plt.scatter(centers[:,0],centers[:,1],c='b')
-        # plt.show()
+        self.centers_ = np.random.rand(self.mp_,n) *2 -1
+        plt.scatter(X[:, 0], X[:, 1], c=y, s=2,cmap=my_colors)
+        plt.scatter(self.centers_[:,0],self.centers_[:,1],c='black',s=8)
+        plt.show()
         if self.mp_ != 0:
             X_old = X
             X = np.ones((m,self.mp_+1),'double')
@@ -70,7 +75,6 @@ class SimplePerceptron(BaseEstimator, ClassifierMixin):
             for xx_i,xx in enumerate(X_old):
                 for cc_i,cc in enumerate(self.centers_):
                     X[xx_i][cc_i+1] = self.gauss_function(xx,cc)
-            self.w_ = np.zeros(self.mp_ + 1)
         else:
             X = np.c_[np.ones((m,1)),X_old]
         return self.w_.dot(X.T)
